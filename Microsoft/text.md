@@ -1,0 +1,1 @@
+##### https://datalemur.com/blog/microsoft-sql-interview-questions

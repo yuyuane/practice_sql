@@ -1,0 +1,1 @@
+##### https://datalemur.com/blog/nvidia-sql-interview-questions
