@@ -103,3 +103,19 @@
 # John attended the Math exam 1 time, the Physics exam 1 time, and the Programming exam 1 time.
 
 
+# Write your MySQL query statement below
+
+with n1 as (
+    select *
+    from Students,
+         Subjects
+),
+     n2 as (
+         select n1.student_id, n1.student_name, n1.subject_name, e.subject_name as new_subject
+         from n1
+                  left join Examinations e on n1.student_id = e.student_id and n1.subject_name = e.subject_name
+     )
+select n2.student_id, n2.student_name, n2.subject_name, count(new_subject) as attended_exams
+from n2
+group by n2.student_id, n2.student_name, n2.subject_name
+order by n2.student_id, n2.subject_name;
