@@ -44,3 +44,6 @@
 # Explanation:
 # We have three movies with odd-numbered IDs: 1, 3, and 5. The movie with ID = 3 is boring so we do not include it in the answer.
 
+# Write your MySQL query statement below
+
+select * from Cinema where id%2=1 and description!='boring' order by rating desc;
