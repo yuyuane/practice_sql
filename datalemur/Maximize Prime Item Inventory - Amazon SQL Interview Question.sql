@@ -36,7 +36,41 @@
 # not_prime	6
 # The dataset you are querying against may have different input & output - this is just an example!
 
+# NOT MINE
+WITH inventory1 AS (
+    SELECT item_type,
+           count(*)            as item_cnt,
+           SUM(square_footage) AS total_square_footage
+    FROM INVENTORY
+    GROUP BY item_type
+),
+     prime_items as (
+         SELECT item_type,
+                floor((500000 / total_square_footage)) * item_cnt             AS item_cnt,
+                floor((500000 / total_square_footage)) * total_square_footage AS total_square_footage
+         FROM inventory1
+         WHERE item_type = 'prime_eligible'
+     )
+select item_type, item_cnt
+from prime_items
+union all
+select item_type, floor((500000 - (select total_square_footage from prime_items)) / total_square_footage) * item_cnt
+from inventory1
+where item_type = 'not_prime';
 
-
-
-
+# MIME
+SELECT item_type,
+       case
+           when
+               item_type = 'prime_eligible'
+               then
+               floor(500000 / SUM(square_footage)) * count(*)
+           else
+                   floor((500000 - floor(500000 / (sum(SUM(square_footage)) over () - SUM(square_footage))) *
+                                   (sum(SUM(square_footage)) over () - SUM(square_footage))) / SUM(square_footage)) *
+                   count(*)
+           END
+           as item_count
+FROM INVENTORY
+GROUP BY item_type
+order by item_type desc;
